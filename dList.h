@@ -23,9 +23,9 @@ int dListLinkInsertB(dListLink *list, dListNode *pos, dListNode *p);
 int dListLinkDeleteHead(dListLink *list);
 int dListLinkDeleteTail(dListLink *list);
 int dListNodeFree(dListNode *p);
-typedef void (*dListIterCB)(dListLink *list, dListNode *p);
-int dListIter(dListLink *list, dListIterCB fn);
-void dListLinkPrintInt(dListLink *list, dListNode *p);
-void dListLinkPrintString(dListLink *list, dListNode *p);
-void dListLinkPrintData(dListLink *list, dListNode *p);
+typedef void (*dListIterCB)(void *ctx, dListLink *list, dListNode *p);
+int dListIter(void *ctx, dListLink *list, dListIterCB fn);
+void dListLinkPrintInt(void *ctx, dListLink *list, dListNode *p);
+void dListLinkPrintString(void *ctx, dListLink *list, dListNode *p);
+void dListLinkPrintData(void *ctx, dListLink *list, dListNode *p);
 #endif

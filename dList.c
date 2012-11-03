@@ -195,26 +195,26 @@ int dListLinkDestroy(dListLink *list)
 	return 0;
 }
 
-int dListIter(dListLink *list, dListIterCB fn)
+int dListIter(void *ctx, dListLink *list, dListIterCB fn)
 {
 	dListNode *p = list->head;
 	while(p)
 	{
-		fn(list, p);
+		fn(ctx,list, p);
 		p = p->next;
 	}
 	return 0;
 }
 
-void dListLinkPrintInt(dListLink *list,dListNode *p)
+void dListLinkPrintInt(void *ctx, dListLink *list,dListNode *p)
 {
 	printf("data: %d\n",*(int *)(p->data));
 }
-void dListLinkPrintString(dListLink *list,dListNode *p)
+void dListLinkPrintString(void *ctx, dListLink *list,dListNode *p)
 {
 	printf("data: %s\n",(char *)(p->data));
 }
-void dListLinkPrintData(dListLink *list,dListNode *p)
+void dListLinkPrintData(void *ctx, dListLink *list,dListNode *p)
 {
 	printf("data: %p\n",(p->data));
 }

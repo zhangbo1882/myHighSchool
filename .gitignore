@@ -1,1 +1,6 @@
 *.o 
+*.gch
+*.d
+*.in
+*.out
+*.files
