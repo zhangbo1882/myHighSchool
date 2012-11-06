@@ -1,49 +1,18 @@
 #include "aaron.h"
+
 Stack* stackInit()
 {
-	Stack *p = (Stack *)myMalloc(sizeof(Stack));
-	if(!p)
-	{
-		myPrintf(("Can not malloc memory\n"));
-		return NULL;
-	}
-	p->head = NULL;
-	p->size = 0;
-	return p;
+	return listInit();
 }
 
-int stackPush(Stack *stack, void *data)
+int stackPush(Stack *stack, const void *data)
 {
-	listNode *p = (listNode *)myMalloc(sizeof(listNode));
-	if(!p)
-	{
-		myPrintf(("Can not malloc memory\n"));
-		return -1;
-	}
-	p->data = data;
-	if(stack->head)
-	{
-		p->next = stack->head;
-	}
-	stack->head  = p;
-	stack->size++;
-	return 0;
+	return listInsertNext(stack, NULL, data);
 }
 
 int stackPop(Stack *stack, void **data)
 {
-	if(stack->head)
-	{
-		*data = stack->head->data;
-		stack->head = stack->head->next;
-		stack->size--;
-		return 0;
-	}
-	else
-	{
-		myPrintf(("Stack is empty\n"));
-		return -1;
-	}
+	return listDeleteNext(stack, NULL,data);
 }
 
 void* stackPeek(Stack *stack)
@@ -58,16 +27,6 @@ int stackSize(Stack *stack)
 
 int stackDestory(Stack *stack)
 {
-	listNode *p = stack->head;
-	listNode *del = NULL;
-	while(p)
-	{
-		del = p;
-		p = p->next;
-		myFree(del);
-	}
-	myFree(stack);
-	return 0;
-	
+	return listDestory(stack);
 }
 

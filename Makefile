@@ -1,4 +1,4 @@
-MACRO := NODEBUGALL
+MACRO := DEBUGALL
 CFLAGS := -g -w -D$(MACRO)
 SOURCES = $(wildcard *.c)
 OBJS = $(patsubst %.c, %.o,$(SOURCES))  

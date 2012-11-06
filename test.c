@@ -50,14 +50,14 @@ void dListTest(void)
 	dListLinkDestroy(myList1);
 	printf("destroy myList2\n");
 	dListLinkDestroy(myList2);
-	printf("End dList Test\n");
+	printf("End dList Test\n\n");
 	return;
 }
 void stackTest(void)
 {
 	int i = 0;
 	void *data = NULL;
-	printf("============================================\n");
+	printf("=========================================\n");
 	printf("Begin Stack Test\n");
 	Stack *myStack = stackInit();
 	if(myStack)
@@ -67,20 +67,18 @@ void stackTest(void)
 		{
 			stackPush(myStack, &digital[i]);
 		}
-#if 1
 		myPrintf(("push name into stack\n"));
 		for(i = 0; i < 5; i++)
 		{
 			stackPush(myStack, name[i]);
 		}
+		myPrintf(("Now stack size is %d\n", stackSize(myStack)));
 		myPrintf(("pop the name\n"));
 		for(i = 0; i < 5; i++)
 		{
 			stackPop(myStack, &data);
 			printf("data: %s\n", (char *)(data));
 		}
-#endif		
-		myPrintf(("Now stack size is %d\n", stackSize(myStack)));
 
 		myPrintf(("pop the digital\n"));
 		for(i = 0; i < 10; i++)
@@ -89,13 +87,55 @@ void stackTest(void)
 			printf("data: %d\n", *(int *)data);
 		}
 		printf("Destory the Stack\n");
-		printf("End Stack Test\n");
+		stackDestory(myStack);
+		printf("End Stack Test\n\n");
 	}
 	return;
 }
+
+void queueTest(void)
+{
+	int i = 0;
+	void *data = NULL;
+	printf("=========================================\n");
+	printf("Begin Queue Test\n");
+	Queue *myQueue = queueInit();
+	if(myQueue)
+	{
+		myPrintf(("enqueue digital into queue\n"));
+		for(i = 0; i < 10; i++)
+		{
+			queueEnqueue(myQueue, &digital[i]);
+		}
+		myPrintf(("enqueue name into queue\n"));
+		for(i = 0; i < 5; i++)
+		{
+			queueEnqueue(myQueue, name[i]);
+		}
+		myPrintf(("Now queue size is %d\n", queueSize(myQueue)));
+		myPrintf(("Dequeue the digital\n"));
+		for(i = 0; i < 10; i++)
+		{
+			queueDequeue(myQueue, &data);
+			printf("data: %d\n", *(int *)data);
+		}
+		myPrintf(("Dequeue the name\n"));
+		for(i = 0; i < 5; i++)
+		{
+			queueDequeue(myQueue, &data);
+			printf("data: %s\n", (char *)(data));
+		}
+		printf("Destory the Queue\n");
+		queueDestory(myQueue);
+		printf("End Queue Test\n\n");
+	}
+	return;
+}
+
 int main()
 {
 	dListTest();
 	stackTest();
+	queueTest();
 	return 1;
 }
