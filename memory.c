@@ -15,7 +15,7 @@ void myFree(void **p)
 	{
 		printf("free is NULL\n");
 	}
-	myPrintf(("free memory %p\n", *p));
+	//myPrintf(("free memory %p\n", *p));
 	free(*p);
 	*p = NULL;
 }

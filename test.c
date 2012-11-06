@@ -15,11 +15,13 @@ int dListMax(dListLink *list)
 	dListIter(&max, list, findMax);
 	return max;
 }
-int main()
+void dListTest(void)
 {
 	int i;
 	dListLink *myList1 = dListLinkInit();
 	dListLink *myList2 = dListLinkInit();
+	printf("==========================================\n");
+	printf("Begin dList Test\n");
 	if(myList1)
 	{
 		for(i = 0; i < 5; i++)
@@ -44,9 +46,56 @@ int main()
 	/*find the max value*/
 	printf("max value of myList2 is %d\n", dListMax(myList2));
 	/*Destory the link list*/
-//	printf("destroy myList1\n");
+	printf("destroy myList1\n");
 	dListLinkDestroy(myList1);
-//	printf("destroy myList2\n");
+	printf("destroy myList2\n");
 	dListLinkDestroy(myList2);
-	return 0;
+	printf("End dList Test\n");
+	return;
+}
+void stackTest(void)
+{
+	int i = 0;
+	void *data = NULL;
+	printf("============================================\n");
+	printf("Begin Stack Test\n");
+	Stack *myStack = stackInit();
+	if(myStack)
+	{
+		myPrintf(("push digital into stack\n"));
+		for(i = 0; i < 10; i++)
+		{
+			stackPush(myStack, &digital[i]);
+		}
+#if 1
+		myPrintf(("push name into stack\n"));
+		for(i = 0; i < 5; i++)
+		{
+			stackPush(myStack, name[i]);
+		}
+		myPrintf(("pop the name\n"));
+		for(i = 0; i < 5; i++)
+		{
+			stackPop(myStack, &data);
+			printf("data: %s\n", (char *)(data));
+		}
+#endif		
+		myPrintf(("Now stack size is %d\n", stackSize(myStack)));
+
+		myPrintf(("pop the digital\n"));
+		for(i = 0; i < 10; i++)
+		{
+			stackPop(myStack, &data);
+			printf("data: %d\n", *(int *)data);
+		}
+		printf("Destory the Stack\n");
+		printf("End Stack Test\n");
+	}
+	return;
+}
+int main()
+{
+	dListTest();
+	stackTest();
+	return 1;
 }

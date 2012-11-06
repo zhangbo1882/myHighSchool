@@ -2,4 +2,5 @@
 #include <stdio.h>
 #include <string.h>
 #include "dList.h"
+#include "stack.h"
 #include "debug.h"
