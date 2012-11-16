@@ -1,12 +1,13 @@
 MACRO := DEBUGALL
 CFLAGS := -g -w -D$(MACRO)
+EXE	= hadump
 SOURCES = $(wildcard *.c)
 OBJS = $(patsubst %.c, %.o,$(SOURCES))  
 CC = gcc
-main: $(OBJS)
+$(EXE): $(OBJS)
 	@echo "source files:" $(SOURCES)
 	@echo "object files:" $(OBJS)
-	$(CC) $(OBJS)  -D$(MACRO) $(CFLAGS) -o main  
+	$(CC) $(OBJS)  -D$(MACRO) $(CFLAGS) -o $(EXE)   
 sinclude $(SOURCES:.c=.d)
 %d: %c
 	@echo "create depend"

@@ -1,25 +1,83 @@
 #include<stdio.h>
+#include<unistd.h>
 #include<stdlib.h>
 #include<arpa/inet.h>
 #include "pcap.h"
 #define MAX_ETH_FRAME 1514
+void printHelp(void)
+{
+	printf("Usage: hadump  -v -h -c -s number -b beginNumber1 -e endNumber2 fileName\n");
+	printf("-v: display the packet in detail.\n"
+		"-h: help.\n"
+		"-c: display the total packet number.\n"
+		"-s number: display the specify number packet.\n"
+		"-b beginNumber1: display the packet from the number beginNumber1.\n"
+		"-e endNumber2: display the packet upto the number endNumber.2\n");
+}
 int main(int argc, char *argv[])
 {
 	pcap_file_header pfh;
 	pcap_header ph;
-	int count = 1;
+	int count = 0;
 	void *buff = NULL;
-	char *pcapFile = argv[1];
+	char *pcapFile = argv[argc - 1];
+	const char *optstring = "vhcb:e:s:";
+	char option;
+	bool filter = TRUE;
+	bool verbose = FALSE;
+	bool onlyTotal = FALSE;
+	int begin = 0;
+	int end = 0 ;
 	int readSize = 0;
-//	int pos = 0;
+/*	int pos = 0; */
 	int captureLen = 0;
-	if(argv[1] == NULL)
+	if(argc < 2)
 	{
-		printf("Please input the .pcap file name\n");
+		printHelp();
 		return 0;
 	}
-	printf("pcapFile: %s\n", pcapFile);
+	while((option = getopt(argc, argv, optstring)) != -1)
+	{
+		switch(option)
+		{
+			case 'v':
+				verbose = TRUE;
+				break;
+			case 'h':
+				printHelp();
+				return 0;
+			case 'c':
+				onlyTotal = TRUE;		
+				break;
+			case 's':
+				if(optarg == NULL)
+				{
+					printHelp();
+					return 0;
+				}
+				begin = atoi(optarg);
+				end = begin;
+				break;
+			case 'b':
+				if(optarg == NULL)
+				{
+					printHelp();
+					return 0;
+				}
+				begin = atoi(optarg);
+				break;
+			case 'e':
+				if(optarg == NULL)
+				{
+					printHelp();
+					return 0;
+				}
+				end = atoi(optarg);
+				break;
+			
+		}
 		
+	}
 	FILE *fp = fopen(pcapFile, "rw");
 	if(!fp)
 	{
@@ -27,27 +85,30 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	fread(&pfh, sizeof(pcap_file_header), 1, fp);
-//	dumpPcapFileHeader(&pfh);
-//	pos = ftell(fp);
-//	printf("Current Pos: %d\n", pos);
+#if 0
+	dumpPcapFileHeader(&pfh);
+	pos = ftell(fp);
+	printf("Current Pos: %d\n", pos);
+#endif
 	buff = (void *)malloc(MAX_ETH_FRAME);
 	if(!buff)
 	{
 		printf("Can not malloc memory\n");
 		return -1;
 	}
-	while(count++)
+	while(++count)
 	{
 		memset(buff, 0, MAX_ETH_FRAME);
 		fread(&ph, sizeof(pcap_header), 1, fp);
 		if(feof(fp))
 		{
-			printf("End of File\n");
 			break;
 		}
-//		dumpPcapHeader(&ph);
-//		pos = ftell(fp);
-//		printf("CUrrent Pos: %d\n", pos);
+#if 0		
+		dumpPcapHeader(&ph);
+		pos = ftell(fp);
+		printf("CUrrent Pos: %d\n", pos);
+#endif
 		captureLen = ntohl(ph.capture_len);
 		fread(buff, captureLen, 1,fp);
 		if(feof(fp))
@@ -55,11 +116,20 @@ int main(int argc, char *argv[])
 			printf("Read Error\n");
 			break;
 		}
-		printf("Packet Number %d\n",count-1);
-		dumpPacket(buff, captureLen);
-		printf("\n");
-//		pos = ftell(fp);
-//		printf("Current Pos: %d\n", pos);
+		if(!onlyTotal &&  begin <= count  && ( end ? count <= end : 1))
+		{	
+			printf("Packet Number %d\n",count);
+			dumpPacket(buff, captureLen, verbose);
+			printf("\n");
+		}
+#if 0
+		pos = ftell(fp);
+		printf("Current Pos: %d\n", pos);
+#endif
+	}
+	if(onlyTotal)
+	{
+		printf("Thare are %u packets\n", count - 1);
 	}
 	if(fp)
 	{
