@@ -18,4 +18,4 @@ sinclude $(SOURCES:.c=.d)
 clean:
 	rm -rf $(OBJS)
 
-	rm -f main
+	rm -f $(EXE)
