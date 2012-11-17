@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "pcap.h"
-#include "sonicHA.h"
+#include "ha.h"
 #define ETH_DST_OFFSIZE 0
 #define ETH_SRC_OFFSIZE 6
 #define ETH_TYPE_OFFSIZE 12
