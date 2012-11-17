@@ -1,7 +1,19 @@
 Begin My Github Way.
 
 	Come ON 
-
+=1 git command
+git add 
+git status
+git commit -a -m
+git clone
+git push
+git pull
+git rm --cache
+git config --global user.name "Your Name Here"
+git config --global user.email "your_email@youremail.com"
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=3600'
+git ls-files --cache
 
 
 --Aaron
