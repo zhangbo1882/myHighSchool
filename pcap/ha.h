@@ -1,5 +1,5 @@
-#ifndef __SONICHA__H__
-#define __SONICHA__H__
+#ifndef __HA__H__
+#define __HA__H__
 
 #define SHAP_AUTHDATA_SIZE	16
 
