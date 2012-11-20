@@ -4,6 +4,9 @@
 #include<arpa/inet.h>
 #include "pcap.h"
 #define MAX_ETH_FRAME 1514
+#define MAX_HA_TYPE	20
+#define PCAP_FILE_MAGIC 0xa1b2c3d4
+extern int statics[MAX_HA_TYPE];
 void printHelp(void)
 {
 	printf("Usage: hadump  -v -h -c -s number -b beginNumber1 -e endNumber2 fileName\n");
@@ -23,11 +26,10 @@ int main(int argc, char *argv[])
 	char *pcapFile = argv[argc - 1];
 	const char *optstring = "vhcb:e:s:";
 	char option;
-	bool filter = TRUE;
 	bool verbose = FALSE;
 	bool onlyTotal = FALSE;
 	int begin = 0;
-	int end = 0 ;
+	int end = 0;
 	int readSize = 0;
 /*	int pos = 0; */
 	int captureLen = 0;
@@ -85,6 +87,11 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	fread(&pfh, sizeof(pcap_file_header), 1, fp);
+	if(ntohl(pfh.magic) != PCAP_FILE_MAGIC)
+	{
+		printf("Unsupported file type, please use pcap file\n");
+		return 0;
+	}
 #if 0
 	dumpPcapFileHeader(&pfh);
 	pos = ftell(fp);
@@ -129,7 +136,11 @@ int main(int argc, char *argv[])
 	}
 	if(onlyTotal)
 	{
-		printf("Thare are %u packets\n", count - 1);
+		printf("There are %u packets\n", count - 1);
+	}
+	else
+	{
+		printStatics();
 	}
 	if(fp)
 	{

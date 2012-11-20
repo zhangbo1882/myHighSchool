@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "pcap.h"
-#include "sonicHA.h"
+#include "ha.h"
 #define ETH_DST_OFFSIZE 0
 #define ETH_SRC_OFFSIZE 6
 #define ETH_TYPE_OFFSIZE 12
@@ -11,6 +11,12 @@
 #define MACPARAM(x)	(unsigned char)(x)[0],(unsigned char)(x)[1],(unsigned char)(x)[2],(unsigned char)(x)[3],(unsigned char)(x)[4],(unsigned char)(x)[5]		
 #define IPFORMAT "%u.%u.%u.%u"
 #define IPPARAM(x) (x >> 24), ((x & 0x00ff0000) >> 16), ((x & 0x0000ff00) >> 8) , (x & 0x000000ff)
+
+#define MAX_HA_TYPE	20 
+
+int statics[MAX_HA_TYPE] = {0};
+
+
 
 char *haTypeMap[20]={
 		"None",
@@ -66,6 +72,21 @@ char *haCommandTypeMap[10]={
 		"send VPN information",
 		"send SVRRP LLB",
 };
+ 
+void printStatics(void)
+{
+	int i = 0;
+	printf("==================================================\n");
+	printf("*HA Packet Statics:\n");
+	for(i; i < MAX_HA_TYPE; i++)
+	{
+		if(statics[i])
+		{       
+			printf("*\t%-20s:\t%u\n", haTypeMap[i], statics[i]);          
+		}
+	}
+	printf("==================================================\n");
+}
 
 void dumpPcapFileHeader(pcap_file_header *pfh)
 {
@@ -176,6 +197,7 @@ void dumpHaPacket(void *data, size_t size, bool verbose)
 	printf("\t\t%-20s:	0x%04x\n", "checksum", ntohs(*(uint16 *)(ha + SHAP_CHECKSUM_OFFSET)));
 	printf("\t\t%-20s:	", "authdata");
 	dumpHex(auth, SHAP_AUTHDATA_SIZE);
+	statics[type]++;
 	if(!verbose)
 		return;
 	switch(type)

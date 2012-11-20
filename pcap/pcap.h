@@ -31,7 +31,7 @@ typedef struct pcap_header{
 				 
  }pcap_header;
  
- 
+void printStatics(void); 
 void dumpPcapFileHeader(pcap_file_header *pfh);
 void dumpPcapHeader(pcap_header *ph);
 void dumpPacket(void *data, size_t size, bool verbose);
