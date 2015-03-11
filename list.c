@@ -12,7 +12,18 @@ List *listInit()
 	p->size = 0 ;
 	return p;
 }
-
+void listPrint(List *list)
+{
+	int i = 0;
+	listNode *cur = list->head;
+	while(cur)
+	{
+		printf("Node[%d]: %d \n",i+1, *(int *)(cur->data));
+		cur = cur->next;
+		i++;
+	}
+	return;
+}
 int listInsertNext(List *list, listNode *p, const void *data)
 {
 	listNode *new = (listNode *)myMalloc(sizeof(listNode));
@@ -94,4 +105,36 @@ int listDestory(List *list)
 	}
 	myFree(&list);
 	return 0;
+}
+
+int shouldRemove(void *data)/*If the data is odd return true*/
+{
+	if((*(int *)data)%2 == 1)
+		return true;
+	else
+		return false;
+}
+void listRemove(List *list, removeFn shouldRemove)
+{
+	listNode *remove = NULL;
+	listNode **cur = &(list->head);
+	printf("%s, %d cur: %p, *cur: %p\n", __FUNCTION__, __LINE__, cur, *cur);
+	while(*cur)
+	{
+		remove = *cur;
+		printf("%s, %d remove: %p,\n", __FUNCTION__, __LINE__, remove);
+		if(shouldRemove(remove->data))
+		{
+			*cur = remove->next;
+			printf("%s, %d *cur: %p,\n", __FUNCTION__, __LINE__, *cur);
+			myFree(&remove);
+		}
+		else
+		{
+			cur = &(remove->next);
+			printf("%s, %d cur: %p, *cur: %p\n", __FUNCTION__, __LINE__, cur, *cur);
+
+		}
+	}
+	
 }

@@ -15,6 +15,24 @@ int dListMax(dListLink *list)
 	dListIter(&max, list, findMax);
 	return max;
 }
+void listTest(void)
+{
+	int i;
+	listNode *tail = NULL;
+	List *myList = listInit();
+	printf("Begin list Test\n");
+	for(i = 0; i < 2; i++)
+	{
+		listInsertNext(myList, tail, &digital[i]);
+		tail = myList->tail;
+	}
+	listPrint(myList);
+	printf("\nlist remove\n");
+	listRemove(myList, shouldRemove);
+	listPrint(myList);
+	listDestory(myList);
+	return;
+}
 void dListTest(void)
 {
 	int i;
@@ -134,8 +152,9 @@ void queueTest(void)
 
 int main()
 {
-	dListTest();
-	stackTest();
-	queueTest();
+//	dListTest();
+//	stackTest();
+//	queueTest();
+	listTest();
 	return 1;
 }

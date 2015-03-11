@@ -1,6 +1,6 @@
 #ifndef __HA__H__
 #define __HA__H__
-
+/*All the definitions about the HA packet are based on SonicOS 5.9*/
 #define SHAP_AUTHDATA_SIZE	16
 
 typedef struct HaShapHeader

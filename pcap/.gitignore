@@ -1,0 +1,9 @@
+*.o 
+*.gch
+*.d
+*.in
+*.out
+*.files
+*.sh
+*.cap
+*.txt
