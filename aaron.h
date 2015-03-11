@@ -6,3 +6,4 @@
 #include "stack.h"
 #include "queue.h"
 #include "debug.h"
+#include "hash.h"

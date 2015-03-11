@@ -1,7 +1,7 @@
 #include "aaron.h"
-List *listInit()
+List *listInit(pCompareFn compareFn)
 {
-	List *p = (List *)myMalloc(sizeof(List));
+	List *p = (List *)malloc(sizeof(List));
 	if(!p)
 	{
 		myPrintf(("Can not malloc memory\n"));
@@ -10,6 +10,7 @@ List *listInit()
 	p->head = NULL;
 	p->tail = NULL;
 	p->size = 0 ;
+	p->compareFn = compareFn;
 	return p;
 }
 void listPrint(List *list)
@@ -26,7 +27,7 @@ void listPrint(List *list)
 }
 int listInsertNext(List *list, listNode *p, const void *data)
 {
-	listNode *new = (listNode *)myMalloc(sizeof(listNode));
+	listNode *new = (listNode *)malloc(sizeof(listNode));
 	if(!new)
 	{
 		myPrintf(("Can not malloc memory\n"));
@@ -54,6 +55,11 @@ int listInsertNext(List *list, listNode *p, const void *data)
 	}
 	list->size++;
 	return 0;
+}
+
+int listInsertTail(List *list, const void *data)
+{
+	listInsertNext(list, list->tail, data);
 }
 
 int listDeleteNext(List *list, listNode *p, void **data)
@@ -137,4 +143,22 @@ void listRemove(List *list, removeFn shouldRemove)
 		}
 	}
 	
+}
+
+listNode* listFind(List *list, const  void *data)
+{
+	if(!list)
+	{
+		return false;
+
+	}
+	listNode *p = list->head;
+	while(p)
+	{
+		if(list->compareFn(data, p->data) == 0)
+			return p;
+		else
+			p = p->next;
+	}
+	return NULL;
 }

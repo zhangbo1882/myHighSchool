@@ -6,6 +6,7 @@ void *myMalloc(int size)
 	{
 		printf("malloc size %d fail\n", size);
 	}
+	printf("malloc address %p\n", p);
 	return p;	
 }
 
